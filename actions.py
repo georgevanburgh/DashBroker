@@ -1,7 +1,6 @@
 __author__ = 'George'
 
 from twilio.rest import TwilioRestClient
-import sqlite3
 from database import *
 
 config = ConfigParser.RawConfigParser()
