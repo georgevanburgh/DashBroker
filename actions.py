@@ -10,7 +10,7 @@ twilio_sid = config.get("Twilio", "SID")
 twilio_auth_token = config.get("Twilio", "Token")
 
 def notifyHouse(message):
-  for housemate in Housemates.select():
+  for housemate in Housemates.select().where(Housemates.active):
     sendMessage(message, housemate.phoneNumber) 
 
 def sendMessage(message, phoneNumber):

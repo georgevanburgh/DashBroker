@@ -20,6 +20,7 @@ class Housemates(BaseModel):
   firstName = CharField()
   lastName = CharField()
   phoneNumber = CharField()
+  active = BooleanField()
 
 class Button(BaseModel):
   macAddress = CharField(max_length=17, primary_key=True)
