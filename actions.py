@@ -1,22 +1,27 @@
 __author__ = 'George'
 
-from twilio.rest import TwilioRestClient
+from clockwork import clockwork
+import ConfigParser
 from database import *
 
 config = ConfigParser.RawConfigParser()
 config.read("dashbroker.ini")
 
-twilio_sid = config.get("Twilio", "SID")
-twilio_auth_token = config.get("Twilio", "Token")
+clockwork_key = config.get("ClockworkSMS", "Key")
 
 def notifyHouse(message):
   for housemate in Housemates.select().where(Housemates.active):
-    sendMessage(message, housemate.phoneNumber) 
+    sendMessage(message, housemate.phoneNumber)
 
 def sendMessage(message, phoneNumber):
-  client = TwilioRestClient(twilio_sid, twilio_auth_token)
-  message = client.messages.create(to=phoneNumber, from_="+441173252273",
-                                     body=message)
+  client = clockwork.API(clockwork_key)
+  message = clockwork.SMS(
+      to=phoneNumber,
+      message=message)
+  response = client.send(message)
+  if not response.success:
+      print response.error_code
+      print response.error_description
 
 def logButtonPress(macAddress, reason):
   ButtonLog.create(reason=reason, button=macAddress)
